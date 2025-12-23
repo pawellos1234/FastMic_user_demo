@@ -1,0 +1,44 @@
+name: Deploy FastMic Demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd apps/web
+          npm ci
+
+      - name: Build demo
+        run: |
+          cd apps/web
+          npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload build output
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: apps/web/dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
