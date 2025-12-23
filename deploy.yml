@@ -12,6 +12,10 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,14 +27,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          cd apps/web
-          npm ci
+        run: npm ci
 
       - name: Build demo
-        run: |
-          cd apps/web
-          npm run build
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
