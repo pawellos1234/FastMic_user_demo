@@ -1,7 +1,6 @@
 import path from 'node:path';
-import { reactRouter } from '@react-router/dev/vite';
-import { reactRouterHonoServer } from 'react-router-hono-server/dev';
 import { defineConfig } from 'vite';
+import { reactRouter } from '@react-router/dev/vite';
 import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { addRenderIds } from './plugins/addRenderIds';
@@ -14,7 +13,7 @@ import { restart } from './plugins/restart';
 import { restartEnvFileChange } from './plugins/restartEnvFileChange';
 
 export default defineConfig({
-  base: '/FastMic_user_demo/', // ⚠️ konieczne dla GitHub Pages
+  base: '/FastMic_user_demo/',
 
   envPrefix: 'NEXT_PUBLIC_',
   optimizeDeps: {
@@ -33,10 +32,7 @@ export default defineConfig({
   plugins: [
     nextPublicProcessEnv(),
     restartEnvFileChange(),
-    reactRouterHonoServer({
-      serverEntryPoint: './__create/index.ts',
-      runtime: 'node',
-    }),
+    // ❌ Usunięty reactRouterHonoServer (działa tylko lokalnie / SSR)
     babel({
       include: ['src/**/*.{js,jsx,ts,tsx}'],
       exclude: /node_modules/,
@@ -67,10 +63,10 @@ export default defineConfig({
   resolve: {
     alias: {
       lodash: 'lodash-es',
-      'npm:stripe': 'stripe',
-      stripe: path.resolve(__dirname, './src/__create/stripe'),
-      '@auth/create/react': '@hono/auth-js/react',
-      '@auth/create': path.resolve(__dirname, './src/__create/@auth/create'),
+      // ❌ Poniższe aliasy tylko jeśli naprawdę ich używasz
+      // stripe: path.resolve(__dirname, './src/__create/stripe'),
+      // '@auth/create/react': '@hono/auth-js/react',
+      // '@auth/create': path.resolve(__dirname, './src/__create/@auth/create'),
       '@': path.resolve(__dirname, 'src'),
     },
     dedupe: ['react', 'react-dom'],
